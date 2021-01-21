@@ -1,3 +1,3 @@
 base:
   'minion'
-    - formulas/postgresql
+    - formulas/{{name}}
