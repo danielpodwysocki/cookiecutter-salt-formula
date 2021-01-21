@@ -1,3 +1,3 @@
 base:
   'minion'
-    - formulas/{{name}}
+    - formulas/{{cookiecutter.name}}
