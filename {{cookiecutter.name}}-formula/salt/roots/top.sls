@@ -1,0 +1,3 @@
+base:
+  '*':
+    - formulas/{{cookiecutter.name}} 
