@@ -1,0 +1,41 @@
+Vagrant.configure("2") do |config|
+
+  config.vm.box = "debian/buster64"
+ 
+
+  config.vm.define "salt" do |salt|
+    salt.vm.box = "debian/buster64"
+    salt.vm.network "private_network", ip: "192.168.4.100"
+    salt.vm.hostname = "salt" 
+    salt.vm.provision :shell, inline: <<-SHELL
+      sudo cp -r /vagrant/vagrant/salt /srv/salt
+      sudo cp -r /vagrant/{{cookiecutter.name}} /srv/salt/{{cookiecutter.name}}
+      sudo apt install -yq gnupg
+      sudo sh -c 'wget -O - https://repo.saltstack.com/py3/debian/10/amd64/latest/SALTSTACK-GPG-KEY.pub | sudo apt-key add -'
+      sudo sh -c 'echo "deb http://repo.saltstack.com/py3/debian/10/amd64/latest buster main" > /etc/apt/sources.list.d/saltstack.list'
+      sudo sh -c 'echo "192.168.4.100 salt" >> /etc/hosts' 
+      sudo apt update
+      sudo apt install salt-master -yq
+      sudo sh -c 'echo "auto_accept: True" >> /etc/salt/master'
+      systemctl restart salt-master
+      sudo apt install salt-minion -yq
+    SHELL
+
+  end
+
+  config.vm.define "minion" do |minion|
+     minion.vm.box = "debian/buster64"
+     minion.vm.network "private_network", ip: "192.168.4.101"
+     minion.vm.hostname = "minion" 
+    
+     minion.vm.provision :shell, inline: <<-SHELL
+      sudo apt install -yq gnupg
+      sudo sh -c 'wget -O - https://repo.saltstack.com/py3/debian/10/amd64/latest/SALTSTACK-GPG-KEY.pub | sudo apt-key add -'
+      sudo sh -c 'echo "deb http://repo.saltstack.com/py3/debian/10/amd64/latest buster main" > /etc/apt/sources.list.d/saltstack.list'
+      sudo sh -c 'echo "192.168.4.100 salt" >> /etc/hosts' 
+      sudo apt update
+      sudo apt install salt-minion -yq
+    SHELL
+  end
+
+end

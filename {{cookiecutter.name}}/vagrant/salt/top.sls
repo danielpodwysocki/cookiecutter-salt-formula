@@ -1,0 +1,3 @@
+base:
+  'minion':
+    - {{cookiecutter.name}}
