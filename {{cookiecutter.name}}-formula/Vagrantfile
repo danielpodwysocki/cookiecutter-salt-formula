@@ -3,6 +3,7 @@ Vagrant.configure("2") do |config|
   config.vm.box = "ubuntu/focal64"
   
   config.vm.synced_folder "salt/roots/", "/srv/salt/"
+  config.vm.synced_folder "{{cookiecutter.name}}", "/srv/salt/formulas/{{cookiecutter.name}}"
   config.vm.synced_folder "salt/pillar/", "/srv/pillar/"
   config.vm.network "private_network", type: "dhcp"
   ## Use all the defaults:
