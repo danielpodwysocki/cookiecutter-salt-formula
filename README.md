@@ -22,6 +22,12 @@ vagrant up rocky
 vagrant up debian
 ```
 
+### Bring up all the VMs in the Vagrantfile
+
+```
+vagrant up
+```
+
 ### SSH into the rocky box
 ```
 vagrant ssh rocky
